@@ -10,71 +10,145 @@
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: #f8fafc;
+      background-color: #f8fafc; /* Very light cool grey */
+      color: #334155;
       overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
     }
-    /* Science Visualization Background */
-    .bg-particles {
+
+    /* --- Floating Science Background --- */
+    .bg-science-elements {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
       z-index: -1;
-      background: radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.05), transparent 25%),
-                  radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.05), transparent 25%);
+      overflow: hidden;
+      pointer-events: none; /* Let clicks pass through */
+      background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 40%);
     }
-    .molecule {
+
+    .float-icon {
       position: absolute;
-      background: rgba(148, 163, 184, 0.1);
-      border-radius: 50%;
-      animation: float 20s infinite ease-in-out;
+      opacity: 0.04; /* Very subtle */
+      font-weight: 700;
+      color: #64748b;
+      animation: float-random 25s infinite linear;
     }
-    @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-      100% { transform: translateY(0px) rotate(360deg); }
+
+    /* Unique animations for different elements to make it feel organic */
+    .icon-1 { top: 15%; left: 10%; font-size: 5rem; animation-duration: 22s; animation-direction: alternate; }
+    .icon-2 { top: 60%; left: 80%; font-size: 6rem; animation-duration: 28s; animation-delay: -5s; }
+    .icon-3 { top: 75%; left: 15%; font-size: 4rem; animation-duration: 35s; animation-direction: alternate-reverse; }
+    .icon-4 { top: 25%; left: 70%; font-size: 5.5rem; animation-duration: 20s; animation-delay: -10s; }
+    .icon-5 { top: 40%; left: 40%; font-size: 4.5rem; animation-duration: 30s; }
+
+    @keyframes float-random {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -40px) rotate(10deg); }
+      66% { transform: translate(-20px, 20px) rotate(-5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
     }
+
+    /* --- UI Components --- */
+    /* The main glass container */
+    .glass-container {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Floating Gradient Folders */
     .folder-card {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      border: 1px solid #f1f5f9;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy hover */
+      position: relative;
+      overflow: hidden;
     }
+    
+    /* Subtle gradient overlay on folders */
+    .folder-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(248,250,252,0.8) 100%);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .folder-card > * {
+        position: relative;
+        z-index: 1;
+    }
+
     .folder-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border-color: #e2e8f0;
+    }
+    
+    .folder-icon-container {
+        transition: transform 0.3s ease;
+    }
+    
+    .folder-card:hover .folder-icon-container {
+        transform: scale(1.1);
+    }
+
+    /* Custom Scrollbar for breadcrumbs */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
   </style>
 </head>
-<body class="text-slate-800">
+<body>
 
-  <div class="bg-particles">
-    <div class="molecule" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
-    <div class="molecule" style="width: 150px; height: 150px; top: 60%; right: 15%; animation-delay: -5s;"></div>
-    <div class="molecule" style="width: 80px; height: 80px; bottom: 20%; left: 20%; animation-delay: -10s;"></div>
+  <div class="bg-science-elements">
+    <div class="float-icon icon-1">
+        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15c6.667-6 13.333 0 20-6M9 22c1.798-1.998 2.518-3.995 2.807-5.993M15 2c-1.798 1.998-2.518 3.995-2.807 5.993M17 10l-4-4M10.5 16.5l-4-4"/></svg>
+    </div>
+    <div class="float-icon icon-2" style="font-family: serif;">E=mc²</div>
+    <div class="float-icon icon-3">
+        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8M3 22h18M14 22a7 7 0 1 0 0-14h-1M9 14h2M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2ZM12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>
+    </div>
+    <div class="float-icon icon-4">
+         <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M12 2v20M2 12h20"/><path d="M4.9 4.9l14.2 14.2M4.9 19.1l14.2-14.2"/></svg>
+    </div>
+     <div class="float-icon icon-5" style="font-family: serif;">H₂O</div>
   </div>
 
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <header class="mb-12 text-center relative z-10">
-      <div class="inline-flex items-center justify-center p-3 bg-emerald-100 text-emerald-600 rounded-2xl mb-4 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
+    
+    <header class="mb-12 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-50 text-emerald-600 rounded-2xl mb-6 shadow-sm border border-emerald-100">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
       </div>
-      <h1 class="text-4xl font-bold tracking-tight text-slate-900 mb-2">Science Study Portal</h1>
-      <p class="text-slate-500 max-w-2xl mx-auto">Access your WBBSE curriculum notes, exam questions, and answer keys for Life Science and Physical Science.</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">Science Portal</h1>
+      <p class="text-lg text-slate-500 max-w-2xl mx-auto font-light">WBBSE curriculum notes, exam questions, and answer keys.</p>
     </header>
 
-    <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 md:p-10 shadow-xl border border-slate-100 min-h-[500px]">
+    <div class="glass-container rounded-[2rem] p-6 md:p-12 min-h-[500px]">
       
-      <nav class="flex items-center space-x-2 text-sm font-medium text-slate-500 mb-8 pb-4 border-b border-slate-200 overflow-x-auto" id="breadcrumbs">
+      <nav class="flex items-center space-x-2 text-sm font-medium text-slate-500 mb-10 pb-4 border-b border-slate-200/60 overflow-x-auto scrollbar-hide" id="breadcrumbs">
         </nav>
 
-      <div id="content-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div id="content-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
         </div>
 
     </div>
   </div>
 
   <script>
-    // --- DATABASE STRUCTURE ---
-    // You can easily add new PDFs or classes by editing this JSON object.
     // --- DYNAMIC DATABASE FROM GOOGLE SHEETS ---
     // PASTE YOUR PUBLISHED CSV LINK BELOW:
-    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7u9zuHi8Z_O6SNLuS8FmPMdj4FnDIkTahTR72GbIIMWLkjFk6uh1b42u04vTe_GBid1Rp2yoQwcXS/pub?output=csv";
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7u9zuHi8Z_O6SNLuS8FmPMdj4FnDIkTahTR72GbIIMWLkjFk6uh1b42u04vTe_GBid1Rp2yoQwcXS/pub?output=csv"; // <--- CHANGE THIS!
 
     let database = {
       "Class 7": { "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }, "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] } },
@@ -98,8 +172,8 @@
       
       // Home button
       const homeBtn = document.createElement('button');
-      homeBtn.className = 'hover:text-emerald-600 transition flex items-center whitespace-nowrap';
-      homeBtn.innerHTML = '<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Home';
+      homeBtn.className = 'hover:text-emerald-600 transition flex items-center whitespace-nowrap py-1 px-3 bg-slate-100 hover:bg-emerald-50 rounded-lg';
+      homeBtn.innerHTML = '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Home';
       homeBtn.onclick = () => { currentPath = []; renderApp(); };
       breadcrumbsContainer.appendChild(homeBtn);
 
@@ -107,11 +181,13 @@
       currentPath.forEach((segment, index) => {
         const separator = document.createElement('span');
         separator.className = 'mx-2 text-slate-300';
-        separator.innerText = '/';
+        separator.innerText = '›';
         breadcrumbsContainer.appendChild(separator);
 
         const pathBtn = document.createElement('button');
-        pathBtn.className = index === currentPath.length - 1 ? 'text-slate-800 font-semibold whitespace-nowrap' : 'hover:text-emerald-600 transition whitespace-nowrap';
+        pathBtn.className = index === currentPath.length - 1 
+            ? 'text-slate-800 font-semibold whitespace-nowrap py-1 px-3 bg-white rounded-lg shadow-sm border border-slate-100' 
+            : 'hover:text-emerald-600 transition whitespace-nowrap py-1 px-3';
         pathBtn.innerText = segment;
         pathBtn.onclick = () => { currentPath = currentPath.slice(0, index + 1); renderApp(); };
         breadcrumbsContainer.appendChild(pathBtn);
@@ -129,25 +205,28 @@
       // If currentData is an Array, we are at the PDF level
       if (Array.isArray(currentData)) {
         if (currentData.length === 0) {
-          contentGrid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400">No documents uploaded here yet.</div>';
+          contentGrid.innerHTML = `
+            <div class="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400">
+                <svg class="w-16 h-16 mb-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <p>No documents uploaded here yet.</p>
+            </div>`;
           return;
         }
 
         currentData.forEach(pdf => {
-          // Google Drive link constructors
           const viewLink = `https://drive.google.com/file/d/${pdf.fileId}/view`;
           const downloadLink = `https://drive.google.com/uc?export=download&id=${pdf.fileId}`;
 
           const pdfCard = document.createElement('div');
-          pdfCard.className = 'folder-card bg-white border border-slate-200 p-5 rounded-2xl flex flex-col h-full';
+          pdfCard.className = 'folder-card p-6 rounded-[1.5rem] flex flex-col h-full shadow-sm';
           pdfCard.innerHTML = `
-            <div class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-4">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            <div class="folder-icon-container w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
             </div>
-            <h3 class="font-semibold text-slate-800 mb-4 flex-grow">${pdf.title}</h3>
-            <div class="flex gap-2 mt-auto">
-              <a href="${viewLink}" target="_blank" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium py-2 rounded-lg text-center transition">View</a>
-              <a href="${downloadLink}" target="_blank" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium py-2 rounded-lg text-center transition shadow-sm">Download</a>
+            <h3 class="font-medium text-slate-800 mb-6 flex-grow leading-snug">${pdf.title}</h3>
+            <div class="flex gap-3 mt-auto">
+              <a href="${viewLink}" target="_blank" class="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-semibold py-2.5 rounded-xl text-center transition">View</a>
+              <a href="${downloadLink}" target="_blank" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold py-2.5 rounded-xl text-center transition shadow-md">Download</a>
             </div>
           `;
           contentGrid.appendChild(pdfCard);
@@ -158,20 +237,20 @@
         for (const key in currentData) {
           const folderCard = document.createElement('button');
           
-          // Color logic based on subject/folder type
-          let iconColor = 'text-blue-500 bg-blue-50';
-          if (key === 'Life Science' || key === 'Zoology' || key === 'Botany') iconColor = 'text-emerald-500 bg-emerald-50';
-          if (key === 'Physical Science') iconColor = 'text-indigo-500 bg-indigo-50';
-          if (key === 'Exam Ques') iconColor = 'text-amber-500 bg-amber-50';
-          if (key === 'Answer Key') iconColor = 'text-purple-500 bg-purple-50';
+          // Color logic based on subject/folder type with elegant gradients
+          let iconBg = 'bg-gradient-to-br from-blue-100 to-blue-50 text-blue-600';
+          if (key === 'Life Science') iconBg = 'bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600';
+          if (key === 'Physical Science') iconBg = 'bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-600';
+          if (key === 'Exam Ques') iconBg = 'bg-gradient-to-br from-amber-100 to-amber-50 text-amber-600';
+          if (key === 'Answer Key') iconBg = 'bg-gradient-to-br from-purple-100 to-purple-50 text-purple-600';
 
-          folderCard.className = 'folder-card bg-white border border-slate-200 p-6 rounded-2xl text-left flex flex-col items-start focus:outline-none focus:ring-2 focus:ring-emerald-500';
+          folderCard.className = 'folder-card p-6 md:p-8 rounded-[1.5rem] text-left flex flex-col items-start focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-sm';
           folderCard.innerHTML = `
-            <div class="w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center mb-4">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+            <div class="folder-icon-container w-14 h-14 ${iconBg} rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
             </div>
-            <h3 class="font-semibold text-lg text-slate-800">${key}</h3>
-            <p class="text-xs text-slate-400 mt-1">Open Folder →</p>
+            <h3 class="font-semibold text-xl text-slate-800 tracking-tight">${key}</h3>
+            <p class="text-sm text-slate-400 mt-2 font-medium flex items-center">Open Folder <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></p>
           `;
           folderCard.onclick = () => {
             currentPath.push(key);
@@ -182,7 +261,6 @@
       }
     }
 
-    // Initialize
     // --- FETCH DATA AND INITIALIZE ---
     Papa.parse(sheetUrl, {
       download: true,
@@ -191,7 +269,6 @@
         const rows = results.data;
         rows.forEach(row => {
           if(row.Class && row.Subject && row.Folder && row.Title && row.FileID) {
-            // Ensure the folder path exists in our template before pushing
             if(database[row.Class] && database[row.Class][row.Subject] && database[row.Class][row.Subject][row.Folder]) {
                database[row.Class][row.Subject][row.Folder].push({
                  title: row.Title,
@@ -200,7 +277,6 @@
             }
           }
         });
-        // Render the app ONLY AFTER data is loaded
         renderApp();
       }
     });
