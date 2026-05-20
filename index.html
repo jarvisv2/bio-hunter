@@ -5,82 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Science Academic Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: #f8fafc;
-      color: #334155;
+      /* Vibrant, Animated Gradient Background */
+      background: linear-gradient(-45deg, #3b82f6, #06b6d4, #10b981, #6366f1);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #1e293b;
       overflow-x: hidden;
       min-height: 100vh;
     }
 
-    /* --- Advanced Background Animations --- */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- Floating Science Elements --- */
     .bg-science-elements {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: -1;
+      z-index: 0;
       overflow: hidden;
       pointer-events: none;
-      background: radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.04), transparent 30%),
-                  radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.04), transparent 30%);
     }
 
     .float-icon {
       position: absolute;
-      opacity: 0.03; /* Very subtle so it doesn't distract reading */
-      color: #475569;
-      animation: float-random 25s infinite linear;
+      color: rgba(255, 255, 255, 0.15); /* Much more visible now! */
+      animation: float-random 20s infinite linear;
     }
 
-    .icon-1 { top: 10%; left: 5%; width: 120px; height: 120px; animation-duration: 22s; animation-direction: alternate; }
-    .icon-2 { top: 65%; left: 85%; width: 150px; height: 150px; animation-duration: 28s; animation-delay: -5s; }
-    .icon-3 { top: 75%; left: 10%; width: 100px; height: 100px; animation-duration: 35s; animation-direction: alternate-reverse; }
-    .icon-4 { top: 20%; left: 75%; width: 130px; height: 130px; animation-duration: 20s; animation-delay: -10s; }
+    .icon-1 { top: 15%; left: 8%; width: 140px; height: 140px; animation-duration: 25s; animation-direction: alternate; }
+    .icon-2 { top: 65%; left: 82%; width: 160px; height: 160px; animation-duration: 30s; animation-delay: -5s; }
+    .icon-3 { top: 75%; left: 12%; width: 120px; height: 120px; animation-duration: 22s; animation-direction: alternate-reverse; }
+    .icon-4 { top: 15%; left: 75%; width: 110px; height: 110px; animation-duration: 28s; animation-delay: -10s; }
     
-    .equation { font-size: 4rem; font-weight: 700; font-family: serif; }
+    .equation { font-size: 4.5rem; font-weight: 800; font-family: serif; letter-spacing: 2px;}
 
     @keyframes float-random {
       0% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(30px, -40px) rotate(10deg); }
-      66% { transform: translate(-20px, 20px) rotate(-5deg); }
+      33% { transform: translate(40px, -50px) rotate(15deg); }
+      66% { transform: translate(-30px, 30px) rotate(-10deg); }
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    /* --- High-End Glassmorphism UI --- */
+    /* --- Premium Glassmorphism UI --- */
     .glass-container {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+      background: rgba(255, 255, 255, 0.85); /* Solid enough to read text easily */
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.4) inset;
+      position: relative;
+      z-index: 10;
     }
 
-    /* Floating Gradient Folders */
+    /* 3D Folder Cards */
     .folder-card {
-      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-      border: 1px solid #f1f5f9;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: white;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
+      border-radius: 1.5rem;
     }
 
     .folder-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-      border-color: #e2e8f0;
-      background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.15), 0 10px 20px -5px rgba(59, 130, 246, 0.1);
+      border-color: #cbd5e1;
     }
 
     .folder-icon-container {
-        transition: transform 0.3s ease;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
     
     .folder-card:hover .folder-icon-container {
-        transform: scale(1.1);
+      transform: scale(1.1) rotate(5deg);
     }
 
-    /* Hide scrollbar for breadcrumbs */
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -94,19 +101,19 @@
     <svg class="float-icon icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M2 12h20 M5 5l14 14 M5 19L19 5"/></svg>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative z-10">
     
-    <header class="mb-12 text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-white text-slate-700 rounded-2xl mb-6 shadow-sm border border-slate-100">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+    <header class="mb-12 text-center text-white">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-md text-white rounded-3xl mb-6 shadow-lg border border-white/30">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
       </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">Science Study Portal</h1>
-      <p class="text-lg text-slate-500 max-w-2xl mx-auto font-light">Access your WBBSE curriculum notes, exam questions, and answer keys.</p>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 drop-shadow-md">Science Portal</h1>
+      <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow">WBBSE curriculum notes, exam questions, and answer keys.</p>
     </header>
 
-    <div class="glass-container rounded-[2rem] p-6 md:p-12 min-h-[500px]">
+    <div class="glass-container rounded-[2.5rem] p-6 md:p-10 min-h-[500px]">
       
-      <nav class="flex items-center space-x-2 text-sm font-medium text-slate-500 mb-10 pb-4 border-b border-slate-200/60 overflow-x-auto scrollbar-hide" id="breadcrumbs">
+      <nav class="flex items-center space-x-2 text-sm font-medium text-slate-500 mb-8 pb-4 border-b border-slate-200 overflow-x-auto scrollbar-hide" id="breadcrumbs">
       </nav>
 
       <div id="content-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
@@ -128,7 +135,6 @@
     };
 
     let currentPath = [];
-
     const breadcrumbsContainer = document.getElementById('breadcrumbs');
     const contentGrid = document.getElementById('content-grid');
 
@@ -141,7 +147,7 @@
       breadcrumbsContainer.innerHTML = '';
       
       const homeBtn = document.createElement('button');
-      homeBtn.className = 'hover:text-slate-800 transition flex items-center whitespace-nowrap py-1.5 px-3 bg-white/50 hover:bg-white rounded-lg border border-transparent hover:border-slate-200 shadow-sm';
+      homeBtn.className = 'hover:text-blue-600 transition flex items-center whitespace-nowrap py-1.5 px-4 bg-slate-100 hover:bg-blue-50 rounded-xl text-slate-600 font-semibold';
       homeBtn.innerHTML = '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Home';
       homeBtn.onclick = () => { currentPath = []; renderApp(); };
       breadcrumbsContainer.appendChild(homeBtn);
@@ -149,13 +155,13 @@
       currentPath.forEach((segment, index) => {
         const separator = document.createElement('span');
         separator.className = 'mx-2 text-slate-300';
-        separator.innerText = '/';
+        separator.innerText = '›';
         breadcrumbsContainer.appendChild(separator);
 
         const pathBtn = document.createElement('button');
         pathBtn.className = index === currentPath.length - 1 
-            ? 'text-slate-900 font-semibold whitespace-nowrap py-1.5 px-3 bg-white rounded-lg shadow-sm border border-slate-200' 
-            : 'hover:text-slate-800 transition whitespace-nowrap py-1.5 px-3';
+            ? 'text-white bg-slate-800 font-bold whitespace-nowrap py-1.5 px-4 rounded-xl shadow-md' 
+            : 'text-slate-600 hover:text-blue-600 font-semibold transition whitespace-nowrap py-1.5 px-2';
         pathBtn.innerText = segment;
         pathBtn.onclick = () => { currentPath = currentPath.slice(0, index + 1); renderApp(); };
         breadcrumbsContainer.appendChild(pathBtn);
@@ -174,8 +180,10 @@
         if (currentData.length === 0) {
           contentGrid.innerHTML = `
             <div class="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400">
-                <svg class="w-16 h-16 mb-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <p>No documents uploaded here yet.</p>
+                <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                  <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <p class="font-medium text-lg">No documents uploaded here yet.</p>
             </div>`;
           return;
         }
@@ -185,15 +193,15 @@
           const downloadLink = `https://drive.google.com/uc?export=download&id=${pdf.fileId}`;
 
           const pdfCard = document.createElement('div');
-          pdfCard.className = 'folder-card p-6 rounded-[1.5rem] flex flex-col h-full shadow-sm';
+          pdfCard.className = 'folder-card p-6 flex flex-col h-full';
           pdfCard.innerHTML = `
-            <div class="folder-icon-container w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            <div class="folder-icon-container w-14 h-14 bg-gradient-to-br from-rose-100 to-rose-200 text-rose-600 rounded-2xl flex items-center justify-center mb-5 shadow-sm">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
             </div>
-            <h3 class="font-medium text-slate-800 mb-6 flex-grow leading-snug">${pdf.title}</h3>
+            <h3 class="font-bold text-slate-800 text-lg mb-6 flex-grow leading-tight">${pdf.title}</h3>
             <div class="flex gap-3 mt-auto">
-              <a href="${viewLink}" target="_blank" class="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold py-2.5 rounded-xl text-center transition shadow-sm">View</a>
-              <a href="${downloadLink}" target="_blank" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold py-2.5 rounded-xl text-center transition shadow-md">Download</a>
+              <a href="${viewLink}" target="_blank" class="flex-1 bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl text-center transition">View</a>
+              <a href="${downloadLink}" target="_blank" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-bold py-3 rounded-xl text-center transition shadow-md">Download</a>
             </div>
           `;
           contentGrid.appendChild(pdfCard);
@@ -203,19 +211,19 @@
         for (const key in currentData) {
           const folderCard = document.createElement('button');
           
-          let iconBg = 'bg-blue-50 text-blue-600';
-          if (key === 'Life Science') iconBg = 'bg-emerald-50 text-emerald-600';
-          if (key === 'Physical Science') iconBg = 'bg-indigo-50 text-indigo-600';
-          if (key === 'Exam Ques') iconBg = 'bg-amber-50 text-amber-600';
-          if (key === 'Answer Key') iconBg = 'bg-purple-50 text-purple-600';
+          let iconBg = 'bg-gradient-to-br from-blue-400 to-blue-600 text-white';
+          if (key === 'Life Science') iconBg = 'bg-gradient-to-br from-emerald-400 to-emerald-600 text-white';
+          if (key === 'Physical Science') iconBg = 'bg-gradient-to-br from-indigo-400 to-indigo-600 text-white';
+          if (key === 'Exam Ques') iconBg = 'bg-gradient-to-br from-amber-400 to-orange-500 text-white';
+          if (key === 'Answer Key') iconBg = 'bg-gradient-to-br from-purple-400 to-purple-600 text-white';
 
-          folderCard.className = 'folder-card p-6 md:p-8 rounded-[1.5rem] text-left flex flex-col items-start focus:outline-none focus:ring-2 focus:ring-slate-300 shadow-sm';
+          folderCard.className = 'folder-card p-6 md:p-8 text-left flex flex-col items-start focus:outline-none focus:ring-4 focus:ring-blue-100';
           folderCard.innerHTML = `
-            <div class="folder-icon-container w-14 h-14 ${iconBg} rounded-2xl flex items-center justify-center mb-5 border border-white shadow-sm">
-              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+            <div class="folder-icon-container w-16 h-16 ${iconBg} rounded-2xl flex items-center justify-center mb-6 shadow-md border border-white/20">
+              <svg class="w-8 h-8 drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
             </div>
-            <h3 class="font-semibold text-xl text-slate-800 tracking-tight">${key}</h3>
-            <p class="text-sm text-slate-400 mt-2 font-medium flex items-center">Open Folder <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></p>
+            <h3 class="font-extrabold text-2xl text-slate-800 tracking-tight">${key}</h3>
+            <p class="text-sm text-slate-500 mt-2 font-bold flex items-center group-hover:text-blue-600 transition-colors">Open Folder <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg></p>
           `;
           folderCard.onclick = () => {
             currentPath.push(key);
@@ -226,7 +234,7 @@
       }
     }
 
-    // --- FETCH DATA AND INITIALIZE ---
+    // --- INITIALIZE ---
     Papa.parse(sheetUrl, {
       download: true,
       header: true,
