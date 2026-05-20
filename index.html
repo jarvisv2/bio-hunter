@@ -6,6 +6,7 @@
   <title>Science Academic Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     body {
       font-family: 'Outfit', sans-serif;
@@ -71,43 +72,17 @@
   <script>
     // --- DATABASE STRUCTURE ---
     // You can easily add new PDFs or classes by editing this JSON object.
-    const database = {
-      "Class 7": {
-        "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] },
-        "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }
-      },
-      "Class 8": {
-        "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] },
-        "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }
-      },
-      "Class 9": {
-        "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] },
-        "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }
-      },
-      "Class 10": {
-        "Life Science": {
-          "Notes": [
-            { title: "Sensitivity and Response in Plants (Bengali)", fileId: "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" },
-            { title: "Cell Theory & Division", fileId: "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" }
-          ],
-          "Exam Ques": [
-            { title: "Unit 1 Mock Test", fileId: "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" }
-          ],
-          "Answer Key": [
-            { title: "Unit 1 Solutions", fileId: "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" }
-          ]
-        },
-        "Physical Science": {
-          "Notes": [
-            { title: "Behavior of Gases", fileId: "YOUR_GOOGLE_DRIVE_FILE_ID_HERE" }
-          ],
-          "Exam Ques": [],
-          "Answer Key": []
-        }
-      }
+    // --- DYNAMIC DATABASE FROM GOOGLE SHEETS ---
+    // PASTE YOUR PUBLISHED CSV LINK BELOW:
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7u9zuHi8Z_O6SNLuS8FmPMdj4FnDIkTahTR72GbIIMWLkjFk6uh1b42u04vTe_GBid1Rp2yoQwcXS/pub?output=csv";
+
+    let database = {
+      "Class 7": { "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }, "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] } },
+      "Class 8": { "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }, "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] } },
+      "Class 9": { "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }, "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] } },
+      "Class 10": { "Life Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] }, "Physical Science": { "Notes": [], "Exam Ques": [], "Answer Key": [] } }
     };
 
-    // --- APP LOGIC ---
     let currentPath = [];
 
     const breadcrumbsContainer = document.getElementById('breadcrumbs');
@@ -208,7 +183,27 @@
     }
 
     // Initialize
-    renderApp();
+    // --- FETCH DATA AND INITIALIZE ---
+    Papa.parse(sheetUrl, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const rows = results.data;
+        rows.forEach(row => {
+          if(row.Class && row.Subject && row.Folder && row.Title && row.FileID) {
+            // Ensure the folder path exists in our template before pushing
+            if(database[row.Class] && database[row.Class][row.Subject] && database[row.Class][row.Subject][row.Folder]) {
+               database[row.Class][row.Subject][row.Folder].push({
+                 title: row.Title,
+                 fileId: row.FileID
+               });
+            }
+          }
+        });
+        // Render the app ONLY AFTER data is loaded
+        renderApp();
+      }
+    });
   </script>
 </body>
 </html>
